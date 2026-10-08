@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Penelitian Sosiologi - Kelas 10</title>
+<style>
+  /* Reset & Font */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  }
+
+  body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #FFDEE9 0%, #B5FFFC 25%, #A1C4FD 50%, #C2E9FB 75%, #FFDEE9 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 18s ease infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+    color: #1a2a3a;
+  }
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* ===== BACKGROUND ANIMASI ===== */
+  .animated-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  /* Balon terbang */
+  .balloon {
+    position: absolute;
+    width: 50px;
+    height: 65px;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    animation: floatUp 18s infinite linear;
+    bottom: -100px;
+    opacity: 0.75;
+    box-shadow: inset -8px -8px 0 rgba(0,0,0,0.08);
+  }
+  .balloon::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 15px;
+    background: rgba(0,0,0,0.2);
+  }
+
+  .balloon:nth-child(1) { left: 8%; background: #FF6B9D; animation-duration: 16s; animation-delay: 0s; }
+  .balloon:nth-child(2) { left: 22%; background: #FFD93D; animation-duration: 20s; animation-delay: 2s; width: 40px; height: 52px; }
+  .balloon:nth-child(3) { left: 38%; background: #6BCB77; animation-duration: 22s; animation-delay: 4s; }
+  .balloon:nth-child(4) { left: 52%; background: #4D96FF; animation-duration: 19s; animation-delay: 1s; width: 55px; height: 70px; }
+  .balloon:nth-child(5) { left: 68%; background: #FF9F45; animation-duration: 24s; animation-delay: 5s; }
+  .balloon:nth-child(6) { left: 82%; background: #C780FA; animation-duration: 17s; animation-delay: 3s; width: 45px; height: 58px; }
+  .balloon:nth-child(7) { left: 92%; background: #FF6B9D; animation-duration: 21s; animation-delay: 6s; }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) rotate(-5deg); opacity: 0.6; }
+    50% { transform: translateY(-500px) rotate(5deg); opacity: 0.9; }
+    100% { transform: translateY(-1200px) rotate(-5deg); opacity: 0; }
+  }
+
+  /* Emoji melayang */
+  .float-emoji {
+    position: absolute;
+    font-size: 2rem;
+    animation: floatEmoji 12s infinite ease-in-out;
+    opacity: 0.7;
+    bottom: -50px;
+  }
+
+  .float-emoji:nth-child(8) { left: 5%; animation-duration: 14s; animation-delay: 0s; }
+  .float-emoji:nth-child(9) { left: 28%; animation-duration: 18s; animation-delay: 2s; font-size: 2.5rem; }
+  .float-emoji:nth-child(10) { left: 48%; animation-duration: 16s; animation-delay: 4s; }
+  .float-emoji:nth-child(11) { left: 68%; animation-duration: 20s; animation-delay: 1s; font-size: 2.2rem; }
+  .float-emoji:nth-child(12) { left: 88%; animation-duration: 15s; animation-delay: 3s; }
+
+  @keyframes floatEmoji {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.7; }
+    90% { opacity: 0.7; }
+    100% { transform: translateY(-1200px) rotate(360deg); opacity: 0; }
+  }
+
+  /* Gelembung kecil */
+  .bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(180, 220, 255, 0.4));
+    animation: bubbleUp 10s infinite linear;
+    bottom: -50px;
+    opacity: 0.6;
+  }
+
+  .bubble:nth-child(13) { left: 15%; width: 15px; height: 15px; animation-duration: 9s; }
+  .bubble:nth-child(14) { left: 45%; width: 20px; height: 20px; animation-duration: 12s; animation-delay: 2s; }
+  .bubble:nth-child(15) { left: 75%; width: 12px; height: 12px; animation-duration: 8s; animation-delay: 4s; }
+  .bubble:nth-child(16) { left: 60%; width: 18px; height: 18px; animation-duration: 11s; animation-delay: 1s; }
+
+  @keyframes bubbleUp {
+    0% { transform: translateY(0) scale(0.5); opacity: 0; }
+    20% { opacity: 0.7; }
+    100% { transform: translateY(-1100px) scale(1.2); opacity: 0; }
+  }
+
+  /* ===== KARTU UTAMA ===== */
+  .main-card {
+    position: relative;
+    z-index: 10;
+    max-width: 1000px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 40px;
+    padding: 35px 40px;
+    box-shadow: 0 25px 60px rgba(100, 120, 180, 0.3), 0 0 0 4px rgba(255,255,255,0.5);
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    max-height: 95vh;
+    overflow-y: auto;
+  }
+
+  .main-card::-webkit-scrollbar { width: 10px; }
+  .main-card::-webkit-scrollbar-track { background: rgba(200, 220, 255, 0.3); border-radius: 10px; }
+  .main-card::-webkit-scrollbar-thumb { background: linear-gradient(#6BCB77, #4D96FF); border-radius: 10px; }
+
+  h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    background: linear-gradient(to right, #FF6B9D, #4D96FF, #6BCB77);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    letter-spacing: 1px;
+  }
+
+  .subhead {
+    font-size: 1rem;
+    color: #3a5a7a;
+    margin-bottom: 25px;
+    border-left: 5px solid #FFD93D;
+    padding: 10px 16px;
+    font-weight: 500;
+    background: rgba(255, 217, 61, 0.2);
+    border-radius: 0 12px 12px 0;
+  }
+
+  /* ===== TAB NAV ===== */
+  .tab-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 25px;
+    border-bottom: 2px dashed rgba(100, 150, 220, 0.4);
+    padding-bottom: 15px;
+  }
+
+  .tab-btn {
+    background: rgba(255, 255, 255, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    color: #2a4a6a;
+    padding: 10px 24px;
+    border-radius: 40px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: 0.2s;
+    box-shadow: 0 4px 10px rgba(100, 150, 220, 0.15);
+  }
+  .tab-btn:hover {
+    background: rgba(255, 255, 255, 0.95);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(100, 150, 220, 0.25);
+  }
+  .tab-btn.active {
+    background: linear-gradient(135deg, #4D96FF, #6BCB77);
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 6px 20px rgba(77, 150, 255, 0.4);
+  }
+
+  .tab-content { display: none; animation: fadeIn 0.4s ease; }
+  .tab-content.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== MATERI CARDS ===== */
+  .materi-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .materi-card {
+    background: rgba(255, 255, 255, 0.88);
+    border-radius: 24px;
+    padding: 20px 22px;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    transition: 0.25s;
+    box-shadow: 0 8px 20px rgba(100, 150, 220, 0.12);
+  }
+  .materi-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(100, 150, 220, 0.22);
+    border-color: #6BCB77;
+  }
+
+  .materi-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+    color: #2a5a9a;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 2px dashed rgba(107, 203, 119, 0.4);
+    padding-bottom: 8px;
+  }
+
+  .materi-card p, .materi-card li {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #2a3a4a;
+    margin-bottom: 8px;
+  }
+  .materi-card ul, .materi-card ol { padding-left: 20px; margin-bottom: 8px; }
+  .materi-card li { margin-bottom: 4px; }
+
+  .highlight {
+    color: #E85D75;
+    font-weight: 700;
+    background: rgba(232, 93, 117, 0.12);
+    padding: 0 4px;
+    border-radius: 4px;
+  }
+
+  .example-box {
+    background: linear-gradient(135deg, rgba(255, 217, 61, 0.18), rgba(107, 203, 119, 0.18));
+    border-left: 5px solid #FFD93D;
+    padding: 10px 14px;
+    border-radius: 0 12px 12px 0;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #2a3a4a;
+  }
+  .example-box strong { color: #E85D75; }
+
+  /* ===== KUIS ===== */
+  .quiz-container {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 28px;
+    padding: 25px 30px;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 8px 20px rgba(100, 150, 220, 0.12);
+  }
+
+  .quiz-question {
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 2px dashed rgba(107, 203, 119, 0.3);
+  }
+  .quiz-question:last-of-type { border-bottom: none; }
+  .quiz-question p {
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin-bottom: 12px;
+    color: #2a4a6a;
+  }
+
+  .quiz-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    margin: 6px 0;
+    border-radius: 16px;
+    background: rgba(240, 248, 255, 0.7);
+    border: 2px solid rgba(200, 220, 255, 0.5);
+    cursor: pointer;
+    transition: 0.15s;
+  }
+  .quiz-option:hover {
+    background: rgba(200, 230, 255, 0.6);
+    border-color: #4D96FF;
+    transform: translateX(4px);
+  }
+  .quiz-option input[type="radio"] {
+    accent-color: #4D96FF;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+  }
+  .quiz-option label {
+    cursor: pointer;
+    flex: 1;
+    font-size: 0.95rem;
+    color: #2a3a4a;
+    font-weight: 500;
+  }
+
+  .quiz-feedback {
+    margin-top: 8px;
+    padding: 8px 14px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: none;
+  }
+  .quiz-feedback.correct {
+    display: block;
+    background: rgba(107, 203, 119, 0.2);
+    border-left: 5px solid #6BCB77;
+    color: #1a6a2a;
+  }
+  .quiz-feedback.wrong {
+    display: block;
+    background: rgba(232, 93, 117, 0.15);
+    border-left: 5px solid #E85D75;
+    color: #a02a3a;
+  }
+
+  .btn {
+    background: linear-gradient(135deg, #4D96FF, #6BCB77);
+    border: none;
+    color: white;
+    padding: 14px 40px;
+    border-radius: 40px;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.2s;
+    box-shadow: 0 8px 20px rgba(77, 150, 255, 0.35);
+    letter-spacing: 0.5px;
+    margin-top: 10px;
+  }
+  .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(77, 150, 255, 0.5);
+  }
+  .btn:active { transform: translateY(0); }
+
+  .score-display {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    text-align: center;
+    padding: 16px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(255, 217, 61, 0.3), rgba(107, 203, 119, 0.3));
+    border: 2px solid rgba(255, 217, 61, 0.6);
+    display: none;
+    color: #2a4a6a;
+  }
+  .score-display.show { display: block; animation: popIn 0.4s ease; }
+
+  @keyframes popIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  /* ===== GAME EDUKASI ===== */
+  .game-container {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 248, 255, 0.95));
+    border-radius: 28px;
+    padding: 30px;
+    border: 3px solid transparent;
+    background-clip: padding-box;
+    box-shadow: 0 10px 30px rgba(100, 150, 220, 0.2);
+    position: relative;
+  }
+
+  .game-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    text-align: center;
+    background: linear-gradient(to right, #FF6B9D, #4D96FF, #6BCB77);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 6px;
+  }
+
+  .game-subtitle {
+    text-align: center;
+    color: #3a5a7a;
+    font-size: 0.95rem;
+    margin-bottom: 22px;
+    font-weight: 500;
+  }
+
+  .form-group {
+    margin-bottom: 18px;
+  }
+  .form-group label {
+    display: block;
+    font-weight: 700;
+    color: #2a4a6a;
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+  }
+  .form-group input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 16px;
+    border: 2px solid rgba(100, 150, 220, 0.3);
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    color: #1a2a3a;
+    transition: 0.2s;
+    outline: none;
+    font-weight: 500;
+  }
+  .form-group input:focus {
+    border-color: #4D96FF;
+    box-shadow: 0 0 0 4px rgba(77, 150, 255, 0.15);
+  }
+
+  /* Game HUD (skor, nyawa, progress) */
+  .game-hud {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, #4D96FF, #6BCB77);
+    color: white;
+    padding: 14px 20px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    box-shadow: 0 8px 20px rgba(77, 150, 255, 0.3);
+  }
+  .hud-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+  .hud-item span.value {
+    background: rgba(255,255,255,0.25);
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 1.05rem;
+  }
+
+  .progress-bar-outer {
+    width: 100%;
+    height: 10px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .progress-bar-inner {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #FFD93D, #6BCB77);
+    border-radius: 10px;
+    transition: width 0.4s ease;
+  }
+
+  /* Game question card */
+  .game-question-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 22px;
+    padding: 22px;
+    border: 2px solid rgba(107, 203, 119, 0.3);
+    box-shadow: 0 8px 20px rgba(100, 150, 220, 0.1);
+    animation: slideIn 0.4s ease;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .game-question-number {
+    display: inline-block;
+    background: linear-gradient(135deg, #FF6B9D, #4D96FF);
+    color: white;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  .game-question-text {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #2a4a6a;
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+
+  .game-options {
+    display: grid;
+    gap: 10px;
+  }
+
+  .game-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border-radius: 16px;
+    background: rgba(240, 248, 255, 0.8);
+    border: 2px solid rgba(200, 220, 255, 0.6);
+    cursor: pointer;
+    transition: 0.2s;
+    font-weight: 600;
+    color: #2a3a4a;
+    font-size: 0.98rem;
+    text-align: left;
+  }
+  .game-option:hover {
+    background: rgba(200, 230, 255, 0.7);
+    border-color: #4D96FF;
+    transform: translateX(6px);
+    box-shadow: 0 6px 15px rgba(77, 150, 255, 0.2);
+  }
+  .game-option.correct {
+    background: linear-gradient(135deg, rgba(107, 203, 119, 0.3), rgba(107, 203, 119, 0.2));
+    border-color: #6BCB77;
+    animation: pulseCorrect 0.5s ease;
+  }
+  .game-option.wrong {
+    background: linear-gradient(135deg, rgba(232, 93, 117, 0.25), rgba(232, 93, 117, 0.15));
+    border-color: #E85D75;
+    animation: shakeWrong 0.5s ease;
+  }
+  .game-option.disabled {
+    pointer-events: none;
+    opacity: 0.7;
+  }
+  .game-option .letter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4D96FF, #6BCB77);
+    color: white;
+    font-weight: 800;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+
+  @keyframes pulseCorrect {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+  }
+  @keyframes shakeWrong {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+
+  .game-feedback {
+    margin-top: 16px;
+    padding: 12px 18px;
+    border-radius: 16px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .game-feedback.correct {
+    display: block;
+    background: rgba(107, 203, 119, 0.2);
+    border-left: 6px solid #6BCB77;
+    color: #1a6a2a;
+  }
+  .game-feedback.wrong {
+    display: block;
+    background: rgba(232, 93, 117, 0.18);
+    border-left: 6px solid #E85D75;
+    color: #a02a3a;
+  }
+
+  /* Game End Screen */
+  .game-end-screen {
+    text-align: center;
+    padding: 30px 20px;
+    animation: popIn 0.6s ease;
+  }
+  .game-end-screen .result-icon {
+    font-size: 5rem;
+    margin-bottom: 10px;
+    display: block;
+    animation: bounceIcon 1s infinite alternate;
+  }
+  @keyframes bounceIcon {
+    from { transform: translateY(0); }
+    to { transform: translateY(-12px); }
+  }
+  .game-end-screen h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    font-weight: 800;
+  }
+  .game-end-screen.win h2 {
+    background: linear-gradient(to right, #FFD93D, #6BCB77);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .game-end-screen.lose h2 {
+    background: linear-gradient(to right, #E85D75, #C780FA);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .game-end-screen p {
+    color: #2a4a6a;
+    font-size: 1rem;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .game-end-screen .final-stats {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    padding: 18px;
+    margin: 20px 0;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .final-stat {
+    text-align: center;
+  }
+  .final-stat .label {
+    font-size: 0.8rem;
+    color: #6a8aaa;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .final-stat .value {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #2a5a9a;
+  }
+
+  .btn-game {
+    background: linear-gradient(135deg, #FF6B9D, #C780FA);
+    border: none;
+    color: white;
+    padding: 14px 40px;
+    border-radius: 40px;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.2s;
+    box-shadow: 0 8px 20px rgba(199, 128, 250, 0.4);
+    margin-top: 12px;
+    letter-spacing: 0.5px;
+  }
+  .btn-game:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 28px rgba(199, 128, 250, 0.6);
+  }
+
+  .btn-secondary {
+    background: linear-gradient(135deg, #4D96FF, #6BCB77);
+    box-shadow: 0 8px 20px rgba(77, 150, 255, 0.35);
+    margin-left: 8px;
+  }
+  .btn-secondary:hover {
+    box-shadow: 0 12px 28px rgba(77, 150, 255, 0.55);
+  }
+
+  /* ===== RESPONSIF ===== */
+  @media (max-width: 750px) {
+    .main-card { padding: 20px; }
+    h1 { font-size: 1.6rem; }
+    .materi-grid { grid-template-columns: 1fr; }
+    .tab-btn { padding: 8px 16px; font-size: 0.85rem; }
+    .quiz-container, .game-container { padding: 18px; }
+    .game-title { font-size: 1.3rem; }
+    .game-hud { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== BACKGROUND ANIMASI ===== -->
+<div class="animated-bg">
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="float-emoji">📚</div>
+  <div class="float-emoji">🔬</div>
+  <div class="float-emoji">🌟</div>
+  <div class="float-emoji">🎓</div>
+  <div class="float-emoji">💡</div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+</div>
+
+<!-- ===== KARTU UTAMA ===== -->
+<div class="main-card">
+  <h1><span>🔬</span> Penelitian Sosiologi</h1>
+  <div class="subhead">✨ Materi Sosiologi Kelas 10 · Semester 1 · Lengkap dengan Contoh & Game Edukasi ✨</div>
+
+  <!-- Navigasi Tab -->
+  <div class="tab-nav">
+    <button class="tab-btn active" data-tab="materi1">📘 Hakikat Penelitian</button>
+    <button class="tab-btn" data-tab="materi2">📊 Jenis Penelitian</button>
+    <button class="tab-btn" data-tab="materi3">🧠 Penalaran & Sikap</button>
+    <button class="tab-btn" data-tab="kuis">📝 Kuis Interaktif</button>
+    <button class="tab-btn" data-tab="game">🎮 Game Edukasi</button>
+  </div>
+
+  <!-- ===== TAB 1: Hakikat Penelitian ===== -->
+  <div class="tab-content active" id="materi1">
+    <div class="materi-grid">
+      <div class="materi-card">
+        <h3>🔍 Apa itu Penelitian?</h3>
+        <p>Penelitian adalah usaha untuk <span class="highlight">mencari kebenaran</span> secara sistematis dan terencana. Tujuannya untuk mengumpulkan, mencari, dan menganalisis fakta mengenai suatu masalah.</p>
+        <p><strong>Menurut para ahli:</strong></p>
+        <ul>
+          <li><strong>Marzuki:</strong> Usaha mengumpulkan, mencari, dan menganalisis fakta.</li>
+          <li><strong>Supranto:</strong> Kegiatan untuk memperoleh fakta/prinsip dengan sabar, hati-hati, sistematis.</li>
+          <li><strong>Sutrisno Hadi:</strong> Usaha menemukan, mengembangkan, dan menguji kebenaran.</li>
+        </ul>
+        <div class="example-box">
+          <strong>📌 Contoh:</strong> Seorang siswa ingin tahu mengapa teman-temannya sering terlambat ke sekolah. Ia lalu mengumpulkan data dengan bertanya dan mencatat alasan mereka. Itu adalah bentuk penelitian sederhana.
+        </div>
+      </div>
+      <div class="materi-card">
+        <h3>⚙️ Syarat Penelitian</h3>
+        <ul>
+          <li><span class="highlight">Sistematis</span> — mengikuti pola/tahapan teratur dari sederhana ke rumit.</li>
+          <li><span class="highlight">Terencana</span> — semua langkah dipikirkan dan disiapkan sejak awal.</li>
+          <li><span class="highlight">Mengikuti Prosedur Ilmiah</span> — sesuai kaidah ilmiah, valid, dan dapat dipertanggungjawabkan.</li>
+        </ul>
+        <div class="example-box">
+          <strong>📌 Contoh Sistematis:</strong> Tidak bisa menganalisis data sebelum mengumpulkannya. Urutannya: rumuskan masalah → susun rencana → kumpulkan data → analisis.<br>
+          <strong>📌 Contoh Terencana:</strong> Sebelum penelitian, kamu sudah menentukan siapa yang diteliti, alat apa yang dipakai, dan berapa lama waktunya.
+        </div>
+      </div>
+      <div class="materi-card">
+        <h3>🎯 Kegunaan Penelitian</h3>
+        <p>Ditinjau dari kepentingan ilmu pengetahuan, penelitian adalah alat utama untuk:</p>
+        <ul>
+          <li>Memperkuat ilmu pengetahuan</li>
+          <li>Membina dan mengembangkan ilmu pengetahuan</li>
+        </ul>
+        <p>Hasil penelitian harus bisa <span class="highlight">dipercaya</span>, <span class="highlight">diuji dengan data nyata</span>, dan <span class="highlight">menyelesaikan masalah secara terencana</span>.</p>
+        <div class="example-box">
+          <strong>📌 Contoh:</strong> Penelitian tentang kenakalan remaja menghasilkan data yang dipakai pemerintah untuk membuat program pembinaan remaja. Penelitian ini memperkuat ilmu sosiologi dan membantu menyelesaikan masalah sosial.
+        </div>
+      </div>
+      <div class="materi-card">
+        <h3>🧩 Penalaran: Deduksi & Induksi</h3>
+        <p><strong>Deduksi</strong> → dari umum ke khusus (pasti).</p>
+        <div class="example-box">
+          <strong>📌 Contoh Deduksi:</strong><br>
+          Umum: Semua siswa kelas 10 wajib pakai seragam putih abu-abu.<br>
+          Khusus: Rina siswa kelas 10.<br>
+          Kesimpulan: Rina wajib pakai seragam putih abu-abu.
+        </div>
+        <p style="margin-top:10px;"><strong>Induksi</strong> → dari khusus ke umum (kemungkinan besar).</p>
+        <div class="example-box">
+          <strong>📌 Contoh Induksi:</strong><br>
+          Fakta 1: Ayam Pak Budi putih.<br>
+          Fakta 2: Ayam tetangga putih.<br>
+          Fakta 3: Ayam di pasar mayoritas putih.<br>
+          Kesimpulan: Sebagian besar ayam berwarna putih.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TAB 2: Jenis Penelitian ===== -->
+  <div class="tab-content" id="materi2">
+    <div class="materi-grid">
+      <div class="materi-card">
+        <h3>📂 Berdasarkan Metode</h3>
+        <ul>
+          <li><strong>Historis:</strong> memahami peristiwa masa lalu (dokumen, catatan lisan).</li>
+          <li><strong>Survei:</strong> kuesioner/wawancara ke banyak orang.</li>
+          <li><strong>Eksperimen:</strong> uji hipotesis dengan kondisi buatan terkontrol.</li>
+          <li><strong>Observasi:</strong> mengamati langsung fenomena di lapangan.</li>
+        </ul>
+        <div class="example-box">
+          <strong>📌 Contoh Historis:</strong> Meneliti penyebab runtuhnya Kerajaan Majapahit berdasarkan catatan sejarah.<br>
+          <strong>📌 Contoh Survei:</strong> Menyebar kuesioner ke 100 siswa tentang kepuasan fasilitas sekolah.<br>
+          <strong>📌 Contoh Eksperimen:</strong> Menguji metode belajar A vs B pada dua kelas berbeda.<br>
+          <strong>📌 Contoh Observasi:</strong> Mengamati interaksi siswa saat jam istirahat.
+        </div>
+      </div>
+      <div class="materi-card">
+        <h3>📈 Berdasarkan Taraf Informasi</h3>
+        <ul>
+          <li><strong>Eksploratif:</strong> "Apa" & "Siapa" — topik baru, kreatif, fleksibel.</li>
+          <li><strong>Deskriptif:</strong> "Bagaimana" — gambaran lebih rinci.</li>
+          <li><strong>Eksplanasi:</strong> "Mengapa" — hubungan sebab-akibat.</li>
+          <li><strong>Evaluasi:</strong> menilai keberhasilan program/kebijakan.</li>
+        </ul>
+        <div class="example-box">
+          <strong>📌 Contoh Eksploratif:</strong> Meneliti tren baru penggunaan media sosial di kalangan remaja.<br>
+          <strong>📌 Contoh Deskriptif:</strong> Mendeskripsikan bagaimana tren tersebut menyebar di sekolah.<br>
+          <strong>📌 Contoh Eksplanasi:</strong> Meneliti mengapa media sosial tertentu menurunkan motivasi belajar.<br>
+          <strong>📌 Contoh Evaluasi:</strong> Menilai keefektifan program literasi digital di sekolah.
+        </div>
+      </div>
+      <div class="materi-card">
+        <h3>📊 Kuantitatif vs Kualitatif</h3>
+        <table>
+          <tr><th>Aspek</th><th>Kuantitatif</th><th>Kualitatif</th></tr>
+          <tr><td>Fokus</td><td>Jumlah data</td><td>Kedalaman data</td></tr>
+          <tr><td>Data</td><td>Angka</td><td>Kata, kalimat, gambar</td></tr>
+          <tr><td>Teknik</td><td>Survei</td><td>Wawancara mendalam</td></tr>
+          <tr><td>Analisis</td><td>Statistik</td><td>Non-statistik (narasi)</td></tr>
+        </table>
+        <div class="example-box">
+          <strong>📌 Contoh Kuantitatif:</strong> Menyebar kuesioner ke 1.000 siswa untuk mengetahui persentase yang menyukai Sosiologi.<br>
+          <strong>📌 Contoh Kualitatif:</strong> Mewawancarai 5 siswa secara mendalam untuk tahu alasan mereka tidak suka matematika.
+        </div>
+      </div>
+      <div class="materi-card">
+        <h3>📍 Berdasarkan Tempat</h3>
+        <ul>
+          <li><strong>Laboratorium:</strong> lingkungan terkontrol, variabel dikendalikan.</li>
+          <li><strong>Lapangan:</strong> langsung di kehidupan nyata, interaksi alami.</li>
+          <li><strong>Perpustakaan:</strong> dari buku, jurnal, dokumen sejarah.</li>
+        </ul>
+        <div class="example-box">
+          <strong>📌 Contoh Laboratorium:</strong> Menguji reaksi bakteri terhadap antibiotik di lab steril.<br>
+          <strong>📌 Contoh Lapangan:</strong> Mengamati perilaku remaja di tempat berkumpul tanpa mengubah suasana.<br>
+          <strong>📌 Contoh Perpustakaan:</strong> Mengumpulkan teori dari buku dan jurnal sebelum penelitian lapangan.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TAB 3: Penalaran & Sikap ===== -->
+  <div class="tab-content" id="materi3">
+    <div class="materi-grid">
+      <div class="materi-card">
+        <h3>🧠 Sikap Peneliti</h3>
+        <ul>
+          <li><span class="highlight">Objektif</span> — sesuai fakta, tanpa perasaan pribadi.</li>
+          <li><span class="highlight">Kompeten</span> — punya keahlian & metode tepat.</li>
+          <li><span class="highlight">Faktual</span> — berdasarkan fakta nyata.</li>
+          <li><span class="highlight">Jujur</span> — tidak mengubah data.</li>
+        </ul>
+        <div class="example-box">
+          <strong>📌 Contoh Objektif:</strong> Menuliskan hasil penelitian apa adanya, meskipun bertentangan dengan pendapat pribadi.<br>
+          <strong>📌 Contoh Jujur:</strong> Tidak memanipulasi data agar hasilnya terlihat bagus.
+        </div>
+      </div>
+      <div class="materi-card">
+        <h3>💭 Cara Berpikir Peneliti</h3>
+        <ul>
+          <li><span class="highlight">Skeptis</span> — tidak langsung percaya, butuh bukti.</li>
+          <li><span class="highlight">Analitis</span> — menganalisis masalah mendalam.</li>
+          <li><span class="highlight">Kritis</span> — logis, berdasarkan data & akal sehat.</li>
+          <li><span class="highlight">Terbuka</span> — menerima masukan orang lain.</li>
+        </ul>
+        <div class="example-box">
+          <strong>📌 Contoh Skeptis:</strong> Tidak langsung percaya pada berita hoaks, mencari sumber terpercaya.<br>
+          <strong>📌 Contoh Terbuka:</strong> Menerima kritik dari dosen pembimbing dan memperbaiki penelitian.
+        </div>
+      </div>
+      <div class="materi-card">
+        <h3>📝 Tahap-Tahap Penelitian</h3>
+        <ol>
+          <li><strong>Penyusunan Rancangan:</strong> tentukan masalah, studi pendahuluan, latar belakang, rumusan masalah, tujuan, landasan teori, hipotesis, metodologi.</li>
+          <li><strong>Pelaksanaan:</strong> susun instrumen, kumpulkan data (survei, wawancara, observasi, FGD, studi pustaka), analisis data, tarik kesimpulan.</li>
+          <li><strong>Penyusunan Laporan:</strong> susun laporan (pendahuluan, isi, penutup), presentasikan, publikasikan.</li>
+        </ol>
+        <div class="example-box">
+          <strong>📌 Contoh Tahap 1:</strong> Menentukan judul "Pengaruh Media Sosial terhadap Motivasi Belajar Siswa".<br>
+          <strong>📌 Contoh Tahap 2:</strong> Menyebar angket dan mewawancarai siswa.<br>
+          <strong>📌 Contoh Tahap 3:</strong> Menulis laporan dan mempresentasikannya di kelas.
+        </div>
+      </div>
+      <div class="materi-card">
+        <h3>📌 Populasi & Sampel</h3>
+        <p><strong>Populasi:</strong> seluruh kelompok yang diteliti.</p>
+        <p><strong>Sampel:</strong> sebagian kecil dari populasi yang mewakili.</p>
+        <p><strong>Responden:</strong> orang yang diteliti (kuantitatif).</p>
+        <p><strong>Informan:</strong> orang yang memberi informasi (kualitatif).</p>
+        <div class="example-box">
+          <strong>📌 Contoh:</strong> Populasi = seluruh siswa SMA di kota. Sampel = 100 siswa dari 5 sekolah. Responden = siswa yang mengisi kuesioner. Informan = guru BK yang diwawancarai.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TAB 4: Kuis Interaktif ===== -->
+  <div class="tab-content" id="kuis">
+    <div class="quiz-container">
+      <h3 style="color:#2a5a9a; margin-bottom:18px;">📝 Uji Pemahamanmu!</h3>
+      <p style="color:#4a6a8a; margin-bottom:20px;">Pilih jawaban yang paling tepat. Klik "Periksa Jawaban" untuk melihat skor.</p>
+
+      <div class="quiz-question" data-q="1">
+        <p>1. Sosiologi memiliki empat ciri ilmu. Ciri yang menunjukkan bahwa sosiologi selalu berusaha menyusun abstraksi dari hasil observasi yang konkret di lapangan disebut...</p>
+        <div class="quiz-option"><input type="radio" name="q1" value="a"><label>Empiris</label></div>
+        <div class="quiz-option"><input type="radio" name="q1" value="b"><label>Teoritis</label></div>
+        <div class="quiz-option"><input type="radio" name="q1" value="c"><label>Kumulatif</label></div>
+        <div class="quiz-option"><input type="radio" name="q1" value="d"><label>Non-etis</label></div>
+        <div class="quiz-feedback" id="fb1"></div>
+      </div>
+
+      <div class="quiz-question" data-q="2">
+        <p>2. Seorang peneliti ingin menguji efektivitas dua metode pengajaran. Ia menerapkan metode A di kelas X dan metode B di kelas Y, lalu membandingkan hasilnya. Jenis penelitian ini adalah...</p>
+        <div class="quiz-option"><input type="radio" name="q2" value="a"><label>Penelitian Historis</label></div>
+        <div class="quiz-option"><input type="radio" name="q2" value="b"><label>Penelitian Survei</label></div>
+        <div class="quiz-option"><input type="radio" name="q2" value="c"><label>Penelitian Eksperimen</label></div>
+        <div class="quiz-option"><input type="radio" name="q2" value="d"><label>Penelitian Observasi</label></div>
+        <div class="quiz-feedback" id="fb2"></div>
+      </div>
+
+      <div class="quiz-question" data-q="3">
+        <p>3. Perbedaan utama antara penelitian kuantitatif dan kualitatif terletak pada...</p>
+        <div class="quiz-option"><input type="radio" name="q3" value="a"><label>Kuantitatif fokus pada kedalaman, kualitatif pada jumlah</label></div>
+        <div class="quiz-option"><input type="radio" name="q3" value="b"><label>Kuantitatif menggunakan angka & statistik, kualitatif menggunakan deskripsi & wawancara mendalam</label></div>
+        <div class="quiz-option"><input type="radio" name="q3" value="c"><label>Kuantitatif tidak butuh hipotesis, kualitatif selalu butuh hipotesis</label></div>
+        <div class="quiz-option"><input type="radio" name="q3" value="d"><label>Kuantitatif dilakukan di laboratorium, kualitatif di perpustakaan</label></div>
+        <div class="quiz-feedback" id="fb3"></div>
+      </div>
+
+      <div class="quiz-question" data-q="4">
+        <p>4. Seorang sosiolog ingin memahami mengapa siswa tidak menyukai matematika. Ia mewawancarai beberapa siswa secara mendalam untuk mendapatkan alasan dan pandangan pribadi mereka. Penelitian ini termasuk...</p>
+        <div class="quiz-option"><input type="radio" name="q4" value="a"><label>Kuantitatif</label></div>
+        <div class="quiz-option"><input type="radio" name="q4" value="b"><label>Kualitatif</label></div>
+        <div class="quiz-option"><input type="radio" name="q4" value="c"><label>Eksperimen</label></div>
+        <div class="quiz-option"><input type="radio" name="q4" value="d"><label>Survei</label></div>
+        <div class="quiz-feedback" id="fb4"></div>
+      </div>
+
+      <div class="quiz-question" data-q="5">
+        <p>5. Dalam penelitian, sikap "tidak langsung percaya pada suatu pernyataan, selalu butuh bukti atau fakta" disebut...</p>
+        <div class="quiz-option"><input type="radio" name="q5" value="a"><label>Analitis</label></div>
+        <div class="quiz-option"><input type="radio" name="q5" value="b"><label>Kritis</label></div>
+        <div class="quiz-option"><input type="radio" name="q5" value="c"><label>Skeptis</label></div>
+        <div class="quiz-option"><input type="radio" name="q5" value="d"><label>Terbuka</label></div>
+        <div class="quiz-feedback" id="fb5"></div>
+      </div>
+
+      <button class="btn" id="submitQuiz">Periksa Jawaban</button>
+      <div class="score-display" id="scoreDisplay"></div>
+    </div>
+  </div>
+
+  <!-- ===== TAB 5: Game Edukasi ===== -->
+  <div class="tab-content" id="game">
+    <div class="game-container" id="gameContainer">
+      <!-- START SCREEN -->
+      <div id="gameStartScreen">
+        <div class="game-title">🎮 Sosiologi Detective</div>
+        <div class="game-subtitle">Jawab 10 pertanyaan dengan benar. 3 nyawa, skor maksimal 100!</div>
+
+        <div class="form-group">
+          <label for="playerName">👤 Nama Pemain</label>
+          <input type="text" id="playerName" placeholder="Masukkan namamu..." maxlength="30">
+        </div>
+        <div class="form-group">
+          <label for="playerClass">🏫 Kelas</label>
+          <input type="text" id="playerClass" placeholder="Contoh: X IPA 1" maxlength="20">
+        </div>
+
+        <div style="text-align:center; margin-top: 20px;">
+          <button class="btn-game" id="startGameBtn">🚀 Mulai Bermain</button>
+        </div>
+
+        <div style="margin-top: 22px; padding: 16px; background: rgba(255,217,61,0.15); border-radius: 16px; border-left: 5px solid #FFD93D;">
+          <strong style="color:#E85D75;">📖 Aturan Main:</strong>
+          <ul style="margin-top: 8px; padding-left: 20px; color: #2a3a4a; font-size: 0.9rem; line-height: 1.6;">
+            <li>Setiap jawaban benar mendapat <strong>10 poin</strong>.</li>
+            <li>Kamu punya <strong>3 nyawa ❤️</strong>. Jawaban salah mengurangi 1 nyawa.</li>
+            <li>Menang jika skor <strong>≥ 70</strong> dan nyawa masih ada.</li>
+            <li>Kalah jika nyawa habis atau skor akhir di bawah 70.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- GAME SCREEN -->
+      <div id="gamePlayScreen" style="display:none;">
+        <div class="game-title">🕵️ Sosiologi Detective</div>
+        <div class="game-subtitle" id="playerInfo">Pemain: - | Kelas: -</div>
+
+        <div class="game-hud">
+          <div class="hud-item">❤️ Nyawa: <span class="value" id="livesDisplay">3</span></div>
+          <div class="hud-item">⭐ Skor: <span class="value" id="scoreDisplayGame">0</span></div>
+          <div class="hud-item">📋 Soal: <span class="value" id="questionCounter">1/10</span></div>
+        </div>
+
+        <div class="progress-bar-outer">
+          <div class="progress-bar-inner" id="progressBar"></div>
+        </div>
+
+        <div class="game-question-card" id="gameQuestionCard">
+          <div class="game-question-number" id="gameQNumber">PERTANYAAN 1</div>
+          <div class="game-question-text" id="gameQText">Loading...</div>
+          <div class="game-options" id="gameOptions"></div>
+          <div class="game-feedback" id="gameFeedback"></div>
+        </div>
+      </div>
+
+      <!-- END SCREEN -->
+      <div id="gameEndScreen" style="display:none;"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+  /* ========== TAB NAVIGATION ========== */
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      tabContents.forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  /* ========== KUIS INTERAKTIF ========== */
+  const correctAnswers = { q1:'b', q2:'c', q3:'b', q4:'b', q5:'c' };
+  const explanations = {
+    q1:'Teoritis: sosiologi menyusun abstraksi dari hasil observasi untuk membentuk teori.',
+    q2:'Eksperimen: menguji hipotesis dengan merekayasa kondisi buatan dan mengontrol variabel.',
+    q3:'Kuantitatif fokus pada angka & statistik, kualitatif fokus pada kedalaman data.',
+    q4:'Kualitatif: wawancara mendalam untuk memahami alasan dan pandangan pribadi.',
+    q5:'Skeptis: tidak langsung percaya, selalu membutuhkan bukti atau fakta.'
+  };
+
+  document.getElementById('submitQuiz').addEventListener('click', function() {
+    let score = 0;
+    const total = 5;
+    for (let i = 1; i <= total; i++) {
+      const selected = document.querySelector(`input[name="q${i}"]:checked`);
+      const fb = document.getElementById('fb' + i);
+      fb.className = 'quiz-feedback';
+      fb.textContent = '';
+      if (selected) {
+        if (selected.value === correctAnswers['q'+i]) {
+          score++;
+          fb.classList.add('correct');
+          fb.textContent = '✅ Benar! ' + explanations['q'+i];
+        } else {
+          fb.classList.add('wrong');
+          fb.textContent = '❌ Kurang tepat. ' + explanations['q'+i];
+        }
+      } else {
+        fb.classList.add('wrong');
+        fb.textContent = '⚠️ Belum dijawab. ' + explanations['q'+i];
+      }
+    }
+    const sd = document.getElementById('scoreDisplay');
+    sd.classList.add('show');
+    sd.textContent = `🎯 Skor kamu: ${score} / ${total}` + (score === total ? ' — Luar biasa! 🎉' : score >= 3 ? ' — Bagus, terus belajar! 💪' : ' — Ayo baca lagi materinya! 📖');
+  });
+
+  /* ========== GAME EDUKASI: SOSIOLOGI DETECTIVE ========== */
+  const gameQuestions = [
+    {
+      q: "Ciri sosiologi yang berarti didasarkan pada observasi dan penelitian ilmiah terhadap realitas sosial adalah...",
+      options: ["Empiris", "Teoritis", "Kumulatif", "Non-etis"],
+      answer: 0,
+      explain: "Empiris: sosiologi didasarkan pada observasi dan penelitian ilmiah, bukan dugaan."
+    },
+    {
+      q: "Penelitian yang bertujuan menggali topik baru yang belum banyak diketahui, dengan pertanyaan kunci 'Apa' dan 'Siapa' adalah...",
+      options: ["Deskriptif", "Eksploratif", "Eksplanasi", "Evaluasi"],
+      answer: 1,
+      explain: "Eksploratif: menggali topik baru, kreatif, fleksibel, pertanyaan 'Apa' & 'Siapa'."
+    },
+    {
+      q: "Seorang peneliti mewawancarai siswa secara mendalam untuk memahami alasan mereka menyukai suatu pelajaran. Ini adalah penelitian...",
+      options: ["Kuantitatif", "Kualitatif", "Eksperimen", "Survei"],
+      answer: 1,
+      explain: "Kualitatif: wawancara mendalam, fokus pada kedalaman data dan pemahaman."
+    },
+    {
+      q: "Sikap peneliti yang selalu bekerja berdasarkan fakta nyata yang didapat disebut...",
+      options: ["Objektif", "Kompeten", "Faktual", "Jujur"],
+      answer: 2,
+      explain: "Faktual: selalu bekerja berdasarkan fakta nyata yang didapat di lapangan."
+    },
+    {
+      q: "Penalaran dari umum ke khusus disebut...",
+      options: ["Induksi", "Deduksi", "Analitis", "Skeptis"],
+      answer: 1,
+      explain: "Deduksi: dari hal umum ke hal khusus. Contoh: semua siswa pakai seragam → Rina siswa → Rina pakai seragam."
+    },
+    {
+      q: "Penelitian yang dilakukan di tempat khusus yang sudah diatur untuk tujuan ilmiah, seperti laboratorium, disebut penelitian...",
+      options: ["Lapangan", "Perpustakaan", "Laboratorium", "Historis"],
+      answer: 2,
+      explain: "Penelitian laboratorium: dilakukan di lingkungan terkontrol untuk mengumpulkan data dan menguji hipotesis."
+    },
+    {
+      q: "Cara berpikir peneliti yang tidak langsung percaya pada suatu pernyataan dan selalu butuh bukti adalah...",
+      options: ["Analitis", "Kritis", "Skeptis", "Terbuka"],
+      answer: 2,
+      explain: "Skeptis: tidak langsung percaya, selalu membutuhkan bukti atau fakta."
+    },
+    {
+      q: "Tahap pertama dalam penelitian adalah...",
+      options: ["Mengumpulkan data", "Menyusun laporan", "Penyusunan rancangan penelitian", "Analisis data"],
+      answer: 2,
+      explain: "Tahap pertama: penyusunan rancangan penelitian (menentukan masalah, studi pendahuluan, dll)."
+    },
+    {
+      q: "Seorang peneliti ingin mengetahui persentase siswa yang menyukai Sosiologi. Ia menyebar kuesioner ke 1000 siswa. Penelitian ini termasuk...",
+      options: ["Kualitatif", "Kuantitatif", "Historis", "Observasi"],
+      answer: 1,
+      explain: "Kuantitatif: fokus pada angka dan data yang dapat diukur, dianalisis dengan statistik."
+    },
+    {
+      q: "Syarat penelitian yang berarti seluruh langkahnya sudah dipikirkan dan disiapkan sejak awal adalah...",
+      options: ["Sistematis", "Terencana", "Prosedur ilmiah", "Objektif"],
+      answer: 1,
+      explain: "Terencana: seluruh langkah penelitian sudah dipikirkan dan disiapkan sejak awal."
+    }
+  ];
+
+  let gameState = {
+    playerName: '',
+    playerClass: '',
+    currentQ: 0,
+    score: 0,
+    lives: 3,
+    answered: false,
+    totalQuestions: 10
+  };
+
+  const startScreen = document.getElementById('gameStartScreen');
+  const playScreen = document.getElementById('gamePlayScreen');
+  const endScreen = document.getElementById('gameEndScreen');
+  const startBtn = document.getElementById('startGameBtn');
+
+  startBtn.addEventListener('click', () => {
+    const nameInput = document.getElementById('playerName').value.trim();
+    const classInput = document.getElementById('playerClass').value.trim();
+    if (!nameInput) {
+      alert('📛 Masukkan namamu dulu ya!');
+      return;
+    }
+    if (!classInput) {
+      alert('🏫 Masukkan kelasmu dulu ya!');
+      return;
+    }
+    gameState.playerName = nameInput;
+    gameState.playerClass = classInput;
+    gameState.currentQ = 0;
+    gameState.score = 0;
+    gameState.lives = 3;
+    gameState.answered = false;
+
+    document.getElementById('playerInfo').textContent = `Pemain: ${gameState.playerName} | Kelas: ${gameState.playerClass}`;
+
+    startScreen.style.display = 'none';
+    playScreen.style.display = 'block';
+    endScreen.style.display = 'none';
+    endScreen.innerHTML = '';
+
+    renderGameQuestion();
+  });
+
+  function renderGameQuestion() {
+    if (gameState.currentQ >= gameState.totalQuestions) {
+      endGame();
+      return;
+    }
+    gameState.answered = false;
+
+    const q = gameQuestions[gameState.currentQ];
+    document.getElementById('gameQNumber').textContent = `PERTANYAAN ${gameState.currentQ + 1}`;
+    document.getElementById('gameQText').textContent = q.q;
+    document.getElementById('questionCounter').textContent = `${gameState.currentQ + 1}/${gameState.totalQuestions}`;
+    document.getElementById('livesDisplay').textContent = gameState.lives;
+    document.getElementById('scoreDisplayGame').textContent = gameState.score;
+    document.getElementById('progressBar').style.width = `${(gameState.currentQ / gameState.totalQuestions) * 100}%`;
+
+    const optionsContainer = document.getElementById('gameOptions');
+    optionsContainer.innerHTML = '';
+    const letters = ['A','B','C','D'];
+
+    q.options.forEach((opt, idx) => {
+      const div = document.createElement('div');
+      div.className = 'game-option';
+      div.innerHTML = `<div class="letter">${letters[idx]}</div><span>${opt}</span>`;
+      div.addEventListener('click', () => handleGameAnswer(idx, div));
+      optionsContainer.appendChild(div);
+    });
+
+    document.getElementById('gameFeedback').className = 'game-feedback';
+    document.getElementById('gameFeedback').textContent = '';
+  }
+
+  function handleGameAnswer(selectedIdx, selectedEl) {
+    if (gameState.answered) return;
+    gameState.answered = true;
+
+    const q = gameQuestions[gameState.currentQ];
+    const allOptions = document.querySelectorAll('#gameOptions .game-option');
+    allOptions.forEach(opt => opt.classList.add('disabled'));
+
+    const feedback = document.getElementById('gameFeedback');
+
+    if (selectedIdx === q.answer) {
+      selectedEl.classList.add('correct');
+      gameState.score += 10;
+      feedback.className = 'game-feedback correct';
+      feedback.textContent = `✅ Benar! +10 poin. ${q.explain}`;
+    } else {
+      selectedEl.classList.add('wrong');
+      allOptions[q.answer].classList.add('correct');
+      gameState.lives -= 1;
+      feedback.className = 'game-feedback wrong';
+      feedback.textContent = `❌ Salah! Jawaban benar: ${q.options[q.answer]}. ${q.explain}`;
+    }
+
+    document.getElementById('livesDisplay').textContent = gameState.lives;
+    document.getElementById('scoreDisplayGame').textContent = gameState.score;
+
+    if (gameState.lives <= 0) {
+      setTimeout(() => endGame(), 1400);
+      return;
+    }
+
+    gameState.currentQ++;
+    setTimeout(() => {
+      if (gameState.currentQ >= gameState.totalQuestions) {
+        endGame();
+      } else {
+        renderGameQuestion();
+      }
+    }, 1600);
+  }
+
+  function endGame() {
+    playScreen.style.display = 'none';
+    endScreen.style.display = 'block';
+
+    const maxScore = gameState.totalQuestions * 10;
+    const isWin = gameState.score >= 70 && gameState.lives > 0;
+
+    const icon = isWin ? '🏆' : '💔';
+    const title = isWin ? 'KAMU MENANG!' : 'KAMU KALAH!';
+    const subtitle = isWin
+      ? `Hebat, ${gameState.playerName}! Kamu berhasil menjadi Sosiologi Detective!`
+      : `Jangan menyerah, ${gameState.playerName}! Coba lagi ya!`;
+
+    endScreen.innerHTML = `
+      <div class="game-end-screen ${isWin ? 'win' : 'lose'}">
+        <span class="result-icon">${icon}</span>
+        <h2>${title}</h2>
+        <p>${subtitle}</p>
+        <div class="final-stats">
+          <div class="final-stat">
+            <div class="label">Nama</div>
+            <div class="value">${gameState.playerName}</div>
+          </div>
+          <div class="final-stat">
+            <div class="label">Kelas</div>
+            <div class="value">${gameState.playerClass}</div>
+          </div>
+          <div class="final-stat">
+            <div class="label">Skor</div>
+            <div class="value">${gameState.score}/${maxScore}</div>
+          </div>
+          <div class="final-stat">
+            <div class="label">Nyawa</div>
+            <div class="value">${gameState.lives} ❤️</div>
+          </div>
+        </div>
+        <p style="font-size:0.9rem; color:#6a8aaa; margin-bottom:16px;">
+          ${isWin ? '🎉 Kamu mendapatkan predikat "Sosiologi Detective Hebat"!' : '📚 Baca lagi materi dan coba lagi untuk menang!'}
+        </p>
+        <button class="btn-game" id="playAgainBtn">🔄 Main Lagi</button>
+        <button class="btn-game btn-secondary" id="backToStartBtn">🏠 Kembali</button>
+      </div>
+    `;
+
+    document.getElementById('playAgainBtn').addEventListener('click', () => {
+      endScreen.style.display = 'none';
+      startScreen.style.display = 'block';
+      document.getElementById('playerName').value = gameState.playerName;
+      document.getElementById('playerClass').value = gameState.playerClass;
+    });
+
+    document.getElementById('backToStartBtn').addEventListener('click', () => {
+      endScreen.style.display = 'none';
+      startScreen.style.display = 'block';
+    });
+  }
+</script>
+
+</body>
+</html>
